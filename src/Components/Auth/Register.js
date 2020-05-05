@@ -139,7 +139,7 @@ class Register extends React.Component {
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as="h2" icon color="orange" textAlign="center">
-            <Icon name="puzzle piece" />
+            Register
           </Header>
           <Form onSubmit={this.handleSubmit} size="large">
             <Segment stacked>
