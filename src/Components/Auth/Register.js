@@ -88,6 +88,14 @@ class Register extends React.Component {
     }
   };
 
+  handleInputError = (errors, inputName) => {
+    return errors.some((error) =>
+    error.message.toLowerCase().includes(inputName)
+  )
+    ? "error"
+    : ""
+  }
+
   render() {
     const {
       username,
@@ -95,7 +103,7 @@ class Register extends React.Component {
       password,
       passwordConfirmation,
       errors,
-      loading
+      loading,
     } = this.state;
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
@@ -124,6 +132,8 @@ class Register extends React.Component {
                 type="email"
                 onChange={this.handleChange}
                 value={email}
+                className={this.handleInputError(errors, 'email')
+                }
               ></Form.Input>
               <Form.Input
                 fluid
@@ -134,6 +144,7 @@ class Register extends React.Component {
                 type="password"
                 onChange={this.handleChange}
                 value={password}
+                className={this.handleInputError(errors, 'password')}
               ></Form.Input>
               <Form.Input
                 fluid
@@ -144,8 +155,15 @@ class Register extends React.Component {
                 type="password"
                 onChange={this.handleChange}
                 value={passwordConfirmation}
+                className={this.handleInputError(errors, 'passwordConfirmation')}
               ></Form.Input>
-              <Button disabled={loading} className={loading ? 'loading' : ''} color="orange" fluid size="large">
+              <Button
+                disabled={loading}
+                className={loading ? "loading" : ""}
+                color="orange"
+                fluid
+                size="large"
+              >
                 Submit
               </Button>
             </Segment>
