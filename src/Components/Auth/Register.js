@@ -18,6 +18,7 @@ class Register extends React.Component {
     password: "",
     passwordConfirmation: "",
     errors: [],
+    loading: false,
   };
 
   isFormValid = () => {
@@ -40,8 +41,8 @@ class Register extends React.Component {
     return (
       !username.length ||
       !email.length ||
-      password.length ||
-      passwordConfirmation.length
+      !password.length ||
+      !passwordConfirmation.length
     );
   };
 
@@ -55,11 +56,10 @@ class Register extends React.Component {
     }
   };
 
-  displayErrors = errors => 
+  displayErrors = (errors) =>
     errors.map((error, i) => {
-       return <p key={i}>{error.message}</p>
-    })
-  
+      return <p key={i}>{error.message}</p>;
+    });
 
   handleChange = (e) => {
     this.setState({
@@ -68,22 +68,35 @@ class Register extends React.Component {
   };
 
   handleSubmit = (e) => {
+    e.preventDefault();
     if (this.isFormValid()) {
-      e.preventDefault();
+      this.setState({ errors: [], loading: true });
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then((createdUser) => {
           console.log(createdUser);
+          this.setState({ loading: false });
         })
         .catch((err) => {
           console.log(err);
+          this.setState({
+            errors: this.state.errors.concat(err),
+            loading: false,
+          });
         });
     }
   };
 
   render() {
-    const { username, email, password, passwordConfirmation, errors } = this.state;
+    const {
+      username,
+      email,
+      password,
+      passwordConfirmation,
+      errors,
+      loading
+    } = this.state;
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
@@ -132,7 +145,7 @@ class Register extends React.Component {
                 onChange={this.handleChange}
                 value={passwordConfirmation}
               ></Form.Input>
-              <Button color="orange" fluid size="large">
+              <Button disabled={loading} className={loading ? 'loading' : ''} color="orange" fluid size="large">
                 Submit
               </Button>
             </Segment>
