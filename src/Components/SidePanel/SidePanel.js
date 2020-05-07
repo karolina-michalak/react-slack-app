@@ -4,6 +4,7 @@ import UserPanel from "./UserPanel";
 
 class SidePanel extends React.Component {
   render() {
+      const { currentUser } = this.props;
     return (
       <Menu
         size="large"
@@ -12,7 +13,7 @@ class SidePanel extends React.Component {
         vertical
         style={{ background: "violet", fontSize: "1.5rem" }}
       >
-        <UserPanel></UserPanel>
+        <UserPanel currentUser={currentUser}/>
       </Menu>
     );
   }
